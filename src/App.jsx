@@ -5,7 +5,6 @@ function App() {
   return (
     <>
       <Navbar/>
-      <h1 className="text-center text-4xl my-6">Bangladesh vs Australia first T20</h1>
       <ScoreBoard/>
     </>
   )

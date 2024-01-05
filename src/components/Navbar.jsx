@@ -4,7 +4,7 @@ const Navbar = () => {
     <section className="font-poppins bg-gray-800">
     <div className="max-w-6xl px-4 mx-auto">
         <nav className="flex items-center justify-between py-4">
-            <a href="" className="text-3xl font-semibold leading-none text-gray-400">CricMania</a>
+            <a href="" className="text-3xl font-semibold leading-none text-gray-100">CricMania</a>
             <div className="flex lg:hidden">
                 <button
                     className="flex items-center px-3 py-2 border border-blue-400 rounded text-gray-400 hover:text-blue-800 hover:border-blue-300 lg:hidden">
@@ -18,8 +18,8 @@ const Navbar = () => {
             </div>
 
             <ul className="hidden lg:w-auto lg:space-x-12 lg:items-center lg:flex ">
-                <li><a href="" className="text-md  hover:text-blue-700 text-gray-400">Home</a>
-                </li>
+                {/* <li><a href="" className="text-md  hover:text-blue-700 text-gray-400">Home</a>
+                </li> */}
             </ul>
             <div className="hidden lg:flex">
                 <a href=""

@@ -1,3 +1,4 @@
+/* eslint-disable no-unsafe-optional-chaining */
 /* eslint-disable react/no-unknown-property */
 
 import { useGetInningsQuery, useUpdateInningsMutation } from "../redux/apiSlice";
@@ -5,7 +6,7 @@ import { useGetInningsQuery, useUpdateInningsMutation } from "../redux/apiSlice"
 const ScoreBoard = () => {
 
   const {data} = useGetInningsQuery();
-  const [updateInnings, isLoading] = useUpdateInningsMutation();
+  const [updateInnings] = useUpdateInningsMutation();
   const innings = data?.data
 
   const handleRunUpdate = async (data) => {
@@ -36,10 +37,27 @@ const ScoreBoard = () => {
       console.log(error)
     }
   }
-  const handleOverUpdate = async () => {
+  const handleOverUpdate = async (data) => {
     try {
-      const over = innings?.over + 0.1
-      await updateInnings({ over })
+      if(data === "increment"){
+        if( ((innings?.over).toFixed(1) - Math.trunc((innings?.over).toFixed(1))) >= 0.5){
+          const over = innings?.over + 0.5
+          await updateInnings({ over })
+        }else{
+          const over = innings?.over + 0.1
+          await updateInnings({ over })
+        }
+      }
+      else{
+        if( ((innings?.over).toFixed(1) - Math.trunc((innings?.over).toFixed(1))) == 0){
+          const over = innings?.over - 0.5
+          await updateInnings({ over })
+        }else{
+          const over = innings?.over - 0.1
+          await updateInnings({ over })
+        }
+      }
+
     } catch (error) {
       console.log(error)
     }
@@ -68,7 +86,7 @@ const ScoreBoard = () => {
             </div>
             <div className='flex'>
               <p className='text-3xl font-semibold leading-none text-black ml-6'>Overs: </p>
-              <p className='text-3xl font-semibold leading-none text-black ml-1'>{innings?.over}</p>
+              <p className='text-3xl font-semibold leading-none text-black ml-1'>{(innings?.over.toFixed(1))}</p>
             </div>
         </nav>
     </div>
@@ -85,11 +103,11 @@ const ScoreBoard = () => {
             <button onClick={()=> handleWicketUpdate('decrement')} className="inline-block px-8 py-4 font-bold text-white uppercase bg-blue-500 rounded-md hover:bg-blue-600 mt-2">Wicket Decrement</button>
             </div>
             <div className='flex flex-col'>
-            <button onClick={handleOverUpdate} className="inline-block px-8 py-4 font-bold text-white uppercase bg-blue-500 rounded-md hover:bg-blue-600">Over Increment</button>
-            <button className="inline-block px-8 py-4 font-bold text-white uppercase bg-blue-500 rounded-md hover:bg-blue-600 mt-2">Over Decrement</button>
+            <button onClick={()=> handleOverUpdate('increment')} className="inline-block px-8 py-4 font-bold text-white uppercase bg-blue-500 rounded-md hover:bg-blue-600">Over Increment</button>
+            <button onClick={()=> handleOverUpdate('decrement')} className="inline-block px-8 py-4 font-bold text-white uppercase bg-blue-500 rounded-md hover:bg-blue-600 mt-2">Over Decrement</button>
             </div>
         </div>
-        <button onClick={handleRest} className="w-72 inline-block px-8 py-4 font-bold text-white uppercase bg-red-500 rounded-md hover:bg-red-600 mt-2">Reset</button>
+        <button onClick={handleRest} className="w-72 inline-block px-8 py-4 font-bold text-red uppercase border-2 border-red-600 rounded-md hover:bg-red-500 mt-4">Reset</button>
     </div>
     </>
   );

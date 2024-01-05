@@ -1,20 +1,74 @@
 /* eslint-disable react/no-unknown-property */
 
+import { useGetInningsQuery, useUpdateInningsMutation } from "../redux/apiSlice";
+
 const ScoreBoard = () => {
+
+  const {data} = useGetInningsQuery();
+  const [updateInnings, isLoading] = useUpdateInningsMutation();
+  const innings = data?.data
+
+  const handleRunUpdate = async (data) => {
+    try {
+      if(data === "increment"){
+        const run = innings?.run + 1
+        await updateInnings({ run })
+      }
+      else{
+        const run = innings?.run - 1
+        await updateInnings({ run })
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  const handleWicketUpdate = async (data) => {
+    try {
+      if(data === "increment"){
+        const wicket = innings?.wicket + 1
+        await updateInnings({ wicket })
+      }
+      else{
+        const wicket = innings?.wicket - 1
+        await updateInnings({ wicket })
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  const handleOverUpdate = async () => {
+    try {
+      const over = innings?.over + 0.1
+      await updateInnings({ over })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  const handleRest = async () => {
+    try {
+      const run = 0;
+      const wicket = 0;
+      const over = 0
+      await updateInnings({ run, wicket, over })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
     <>
     <h1 className="text-center text-4xl my-6">Bangladesh vs Australia first T20</h1>
 
-    <div className="max-w-6xl bg-blue-300 px-4 mx-auto border rounded-lg" x-data="{open:false}">
+    <div className="max-w-6xl bg-blue-300 px-4 mx-auto border rounded-lg">
         <nav className="flex justify-between py-4">
             <div className='flex'>
               <p className='text-3xl font-semibold leading-none text-black'>BAN</p>
-              <p className='text-3xl font-semibold leading-none text-black ml-6'> 124/</p>
-              <p className='text-3xl font-semibold leading-none text-black'>7</p>
+              <p className='text-3xl font-semibold leading-none text-black ml-6'> {innings?.run}/</p>
+              <p className='text-3xl font-semibold leading-none text-black'>{innings?.wicket}</p>
             </div>
             <div className='flex'>
               <p className='text-3xl font-semibold leading-none text-black ml-6'>Overs: </p>
-              <p className='text-3xl font-semibold leading-none text-black ml-1'>7.4</p>
+              <p className='text-3xl font-semibold leading-none text-black ml-1'>{innings?.over}</p>
             </div>
         </nav>
     </div>
@@ -23,19 +77,19 @@ const ScoreBoard = () => {
       <h1 className='text-3xl text-center font-semibold my-4'>Third umpire section</h1>
         <div className='flex justify-center gap-2'>
             <div className='flex flex-col'>
-            <button className="inline-block px-8 py-4 font-bold text-white uppercase bg-blue-500 rounded-md hover:bg-blue-600">Run Increment</button>
-            <button className="inline-block px-8 py-4 font-bold text-white uppercase bg-blue-500 rounded-md hover:bg-blue-600 mt-2">Run Decrement</button>
+            <button onClick={()=> handleRunUpdate('increment')} className="inline-block px-8 py-4 font-bold text-white uppercase bg-blue-500 rounded-md hover:bg-blue-600">Run Increment</button>
+            <button onClick={()=> handleRunUpdate('decrement')} className="inline-block px-8 py-4 font-bold text-white uppercase bg-blue-500 rounded-md hover:bg-blue-600 mt-2">Run Decrement</button>
             </div>
             <div className='flex flex-col'>
-            <button className="inline-block px-8 py-4 font-bold text-white uppercase bg-blue-500 rounded-md hover:bg-blue-600">Wicket Increment</button>
-            <button className="inline-block px-8 py-4 font-bold text-white uppercase bg-blue-500 rounded-md hover:bg-blue-600 mt-2">Wicket Decrement</button>
+            <button onClick={()=> handleWicketUpdate('increment')} className="inline-block px-8 py-4 font-bold text-white uppercase bg-blue-500 rounded-md hover:bg-blue-600">Wicket Increment</button>
+            <button onClick={()=> handleWicketUpdate('decrement')} className="inline-block px-8 py-4 font-bold text-white uppercase bg-blue-500 rounded-md hover:bg-blue-600 mt-2">Wicket Decrement</button>
             </div>
             <div className='flex flex-col'>
-            <button className="inline-block px-8 py-4 font-bold text-white uppercase bg-blue-500 rounded-md hover:bg-blue-600">Over Increment</button>
+            <button onClick={handleOverUpdate} className="inline-block px-8 py-4 font-bold text-white uppercase bg-blue-500 rounded-md hover:bg-blue-600">Over Increment</button>
             <button className="inline-block px-8 py-4 font-bold text-white uppercase bg-blue-500 rounded-md hover:bg-blue-600 mt-2">Over Decrement</button>
             </div>
         </div>
-        <button className="w-72 inline-block px-8 py-4 font-bold text-white uppercase bg-red-500 rounded-md hover:bg-red-600 mt-2">Reset</button>
+        <button onClick={handleRest} className="w-72 inline-block px-8 py-4 font-bold text-white uppercase bg-red-500 rounded-md hover:bg-red-600 mt-2">Reset</button>
     </div>
     </>
   );

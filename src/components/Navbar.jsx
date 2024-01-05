@@ -16,16 +16,11 @@ const Navbar = () => {
                 </button>
 
             </div>
-
-            <ul className="hidden lg:w-auto lg:space-x-12 lg:items-center lg:flex ">
-                {/* <li><a href="" className="text-md  hover:text-blue-700 text-gray-400">Home</a>
-                </li> */}
-            </ul>
             <div className="hidden lg:flex">
-                <a href=""
-                    className="inline-block px-4 py-3 mr-2 text-sm font-semibold leading-none border  rounded hover:border-blue-400 hover:bg-blue-400 border-blue-300 bg-blue-300 text-gray-700">
+                <button
+                    className="inline-block px-4 py-3 mr-2 text-md font-semibold leading-none border  rounded hover:bg-blue-400 border-blue-600 bg-blue-400 text-black">
                     Login
-                </a>
+                </button>
 
             </div>
         </nav>
